@@ -28,10 +28,13 @@
                 <a href="/profile" class="text-white text-decoration-none small me-3">
                     Profile
                 </a>
-
-                <a href="/about" class="text-white text-decoration-none small">
-                    About
-                </a>
+                    <a href="/project" class="text-white text-decoration-none small">
+             Project
+            </a>
+            <a href="/about" class="text-white text-decoration-none small">
+            About
+            </a>
+            </li>
             </div>
 
         </div>
