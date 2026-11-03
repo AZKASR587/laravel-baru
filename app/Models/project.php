@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,13 +8,11 @@ class Project extends Model
 {
     use HasFactory;
 
-    protected $table = 'projects';
-
     protected $fillable = [
         'title',
-        'description',
         'teknologi',
         'image',
-        'status',
+        'description',
+        'status'
     ];
 }

@@ -1,26 +1,41 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProjectController;
 
-// Route untuk Halaman Utama / Home
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+// Halaman Utama Publik (Opsional, arahkan ke login admin atau landing page)
 Route::get('/', function () {
-    return view('page.home');
+    return redirect()->route('admin.login');
 });
 
-Route::get('/home', function () {
-    return view('page.home');
-});
+// Rute Publik Halaman Portofolio (Frontend)
+Route::get('/projects', [ProjectController::class, 'indexPublic'])->name('projects.public');
+Route::get('/projects/{id}', [ProjectController::class, 'show'])->name('projects.detail');
 
-// Route untuk Halaman About & Profile
-Route::get('/about', function () {
-    return view('page.about');
-});
+// Rute Halaman Login & Auth Admin
+Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
+Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
-Route::get('/profile', function () {
-    return view('page.profile');
-});
+// Rute Admin yang diproteksi Middleware Auth
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard Admin
+    Route::get('/dashboard', function () {
+        return view('admin.dashboard');
+    })->name('dashboard');
 
-// Route untuk Portofolio Project (Menggunakan ProjectController yang lengkap dengan name)
-Route::get('/project', [ProjectController::class, 'index'])->name('project.index');
-Route::get('/project/{id}', [ProjectController::class, 'show'])->name('project.show');
+    // CRUD Resource Data Project Admin
+    Route::resource('projects', ProjectController::class);
+});
